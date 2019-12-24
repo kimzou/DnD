@@ -27,7 +27,7 @@ const Column = (props) => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     >
-                        {console.log({provided})}
+                        {/* {console.log({provided})} */}
                         {props.tasks && props.tasks.map((task, i) => 
                             <Task key={task && task.id} task={task} index={i}/>
                         )}

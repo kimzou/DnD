@@ -3,7 +3,7 @@ const initalData = {
         'task-1': { id: 'task-1', content: 'Take out the grabage' },
         'task-2': { id: 'task-2', content: 'Watch my favourite show' },        
         'task-3': { id: 'task-3', content: 'Go out with my dog' },        
-        'task-4': { id: 'task-4', content: 'Be happ y' }
+        'task-4': { id: 'task-4', content: 'Be happy' }
     },
     columns: {
         'column-1': {
