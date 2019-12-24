@@ -14,8 +14,9 @@ const App = () => {
     console.log({destination, source, draggableId});
 
     // If the destination doesn't exists or the user drop the item back in the same place
-    if (!destination && (destination.droppableId === source.droppableId && destination.index === source.index)) return;
-    
+    if (!destination) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
     // Get the column and this taskIds
     const column = data.columns[source.droppableId];    
     const newTaskIds = Array.from(column.taskIds);
