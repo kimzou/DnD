@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -24,6 +24,17 @@ const TaskList = styled.div`
     flex-grow: 1;
     min-height: 100px;
 `;
+const InnerList = props => {
+    {console.log("innerlist")}
+    return props.tasks.map((task, i) => (
+        <Task key={task.id} task={task} index={i} />
+    ));
+}
+
+const MemoInnerList = memo(
+    InnerList,
+    (prevProps, nextProps) => JSON.stringify(nextProps.tasks) !== JSON.stringify(prevProps.tasks)
+);
 
 const Column = (props) => {
     return (
@@ -40,9 +51,7 @@ const Column = (props) => {
                                 {...provided.droppableProps}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                {props.tasks && props.tasks.map((task, i) => 
-                                    <Task key={task && task.id} task={task} index={i}/>
-                                )}
+                                <MemoInnerList tasks={props.tasks} />
                                 {provided.placeholder}
                             </TaskList>
                         )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import '@atlaskit/css-reset';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
@@ -9,6 +9,23 @@ import Column from './components/column';
 const Container = styled.div`
   display: flex;
 `;
+
+const InnerList = props => {
+  const { column, taskMap, index } = props;
+  const tasks = column.taskIds.map(taskId => taskMap[taskId]);
+  return <Column column={column} tasks={tasks} index={index} />
+}
+
+const MemoInnerList = memo(
+  InnerList,
+  (prevProps, nextProps) => {
+    if(
+      nextProps.column !== prevProps.column &&
+      nextProps.taskMap !== prevProps.taskMap &&
+      nextProps.index !== prevProps.index
+    ) return false;
+  }
+);
 
 const App = () => {
   const [data, setData] = useState(initialData);
@@ -43,8 +60,7 @@ const App = () => {
     if (start === finish) {
 
       const newTaskIds = Array.from(start.taskIds);
-      console.log({newTaskIds});
-      
+
       // Modify newTaskIds to reorder the tasks
       newTaskIds.splice(source.index, 1);
       newTaskIds.splice(destination.index, 0, draggableId);
@@ -108,13 +124,11 @@ const App = () => {
           >
             {data.columnOrder.map((columnId, i) => {
               const column = data.columns[columnId];
-              const tasks = column.taskIds.map(taskId => data.tasks[taskId]);
-
               return (
-                <Column 
+                <MemoInnerList 
                   key={column.id} 
                   column={column} 
-                  tasks={tasks} 
+                  taskMap={data.tasks} 
                   index={i}
                 />
               )      
