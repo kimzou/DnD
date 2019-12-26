@@ -16,14 +16,9 @@ const initalData = {
             title: 'In progress',
             taskIds: [],
         },
-        'column-3': {
-            id: 'column-3',
-            title: 'Done',
-            taskIds: [],
-        }
     },
     // Facilitate reordering of the column
-    columnOrder: ['column-1', 'column-2', 'column-3'],
+    columnOrder: ['column-1', 'column-2',],
 }
 
 export default initalData;
