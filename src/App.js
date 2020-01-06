@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import initialData from './initialData';
 import MimoDisplay from './components/MimoDisplay';
 import MimoComponent from './components/MimoComponent';
-import Input from './input';
+import { reorder, copy } from './helpers';
 
 const Container =  styled.div`
   display: flex;
@@ -29,7 +29,14 @@ const ComponentList = styled.div`
 
 const App = () => {
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState({
+    ...initialData, 
+    list: { 
+      ['list-1']: [],
+    }
+  });
+
+  const [count, setCount] = useState(0);
 
   const onDragEnd = result => {
     console.log('drag end');
@@ -44,40 +51,74 @@ const App = () => {
     // TODO: return if destination is the same or the item is back to this place
 
     // keep the component dragged in an array
-    const droppedCompo = data.droppedCompo ? data.droppedCompo : [];
 
+    // const droppedCompo = data.droppedCompo ? data.droppedCompo : [];
+
+    // setData({
+    //   ...data,
+    //   droppedCompo: [
+    //     ...droppedCompo, 
+    //     result.draggableId
+    //   ],
+    // });
+    const list = data.list;
+    console.log("splice",Array.from(data.components[draggableId]).splice(destination.index, 0, {...list}));
+    console.log('keys', Object.keys(data.list).length);
+    
+    console.log('destination.droppableId', destination.droppableId);
+    console.log('list destination', list[destination.droppableId]);
+    setCount(count + 1)
     setData({
       ...data,
-      droppedCompo: [
-        ...droppedCompo, 
-        result.draggableId
-      ],
-    });
+      list: {
+        ...list,
+        // Name of the droppable list
+        [destination.droppableId]: {
+          // [Array.from(data.components[draggableId]).splice(destination.index, 0, {...list})]: {
+          ...list[destination.droppableId],
+          // Name of the component but if exists replace the old one so it has to be an increment number
+          [`${count}-${draggableId}`]: data.components[draggableId]
+          // [Object.keys(data.list).length\]: data.components[draggableId]
+          // [Array.from(data.components[draggableId]).splice(destination.index, 0, {...list})]: data.components[draggableId]
+        }
+      }
+    })
 
-    console.log({droppedCompo});
+    if (source.draggableId === destination.draggableId) {
+      
+      // setData({
+      //   components: {
+      //     ...data.components,
+      //     [destination.droppableId]: reorder(
+      //       data.components[result.draggableId],
+      //       source.index,
+      //       destination.index
+      //     )
+      //   }
+      // })
+    }
+
+    // console.log({droppedCompo});
     console.log({data});
-    
-    // const componentOrder = Array.from(data.componentOrder);
-    // const componentName = componentOrder[source.index];
-    // const item = data.components[componentName].onDrop;
-    // return item;
   }
   
   return(
     <DragDropContext onDragEnd={onDragEnd}>
         <Container>
-          <Droppable droppableId="mimo-area">
+          {/* <Droppable droppableId="mimo-area">
               {provided => (
                 <MimoArea 
                   {...provided.droppableProps} 
                   ref={provided.innerRef}
-                >
-                  <MimoDisplay compo={data}/>
-                  {provided.placeholder}
+                > */}
+                <MimoArea>
+                  <MimoDisplay list={data.list}/>
                 </MimoArea>
-              )}
-            </Droppable>
-            <Droppable droppableId="mimo-components" isDropDisabled={true}>
+                  {/* {provided.placeholder}
+                </MimoArea> */}
+              {/* )}
+            </Droppable> */}
+            <Droppable droppableId="components" isDropDisabled={true}>
               {provided => (
                 <ComponentList {...provided.droppableProps} ref={provided.innerRef}>
                   {data.componentOrder.map((c, i) => {
