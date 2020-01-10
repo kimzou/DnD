@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Input = () => {
-    console.log('input called');
     
-    return <input placeholder="Say something" name="some" />
+    const [title, setTitle] = useState("");
+    const [isSubmit, setIsSubmit] = useState(false);
+    
+    const handleSubmit = e => {
+        e.preventDefault();
+        setIsSubmit(true);
+    }
+    
+    return(
+        !isSubmit 
+        ? <form onSubmit={ handleSubmit }>
+            <input
+                placeholder="Insert your title" 
+                name="title" 
+                onChange={ e => setTitle(e.target.value) } 
+                value={ title } 
+            />
+         </form>
+        : <h2>{ title }</h2>
+    );
 }
 
 export default Input;
