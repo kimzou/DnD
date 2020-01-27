@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Content = styled.div`
     margin-right: 200px;
+    background-color: ${props => (props.isDraggingOver ? 'pink' : 'grey')};
 `;
 
 export const Item = styled.div`

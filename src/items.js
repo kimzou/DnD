@@ -1,12 +1,18 @@
 import React from 'react';
 import { uuid } from 'uuidv4';
 import TitleInput from './components/titleInput';
+import Row from './components/row';
 
 export const ITEMS = [
     {
         id: uuid(),
+        content: 'Row',
+        onDrop: <Row />
+    },
+    {
+        id: uuid(),
         content: 'Title',
-        ondrop: <TitleInput />
+        onDrop: <TitleInput />
     },
     {
         id: uuid(),
